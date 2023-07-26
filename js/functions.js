@@ -21,19 +21,23 @@ class DatabaseAccess {
     }
 
     addDepartment(name) {
-        
+        this.query = `INSERT INTO DEPARTMENT (name) VALUES ("${name}")`;
+        return this.query;
     }
 
-    addRole(name, salary, dept) {
-
+    addRole(title, salary, dept) {
+        this.query = `INSERT INTO ROLES (title, salary, department_id) VALUES ("${title}", ${salary}, ${dept})`;
+        return this.query;
     }
 
     addEmployee(fname, lname, role, manager) {
-
+        this.query = `INSERT INTO EMPLOYEE (first_name, last_name, role_id, manager_id) VALUES ("${fname}", "${lname}", ${role}, ${manager})`;
+        return this.query;
     }
 
-    updateTable() {
-
+    updateTable(employee, role) {
+        this.query = `UPDATE EMPLOYEE SET role_id = ${role} WHERE id = ${employee}`;
+        return this.query;
     }
 }
 

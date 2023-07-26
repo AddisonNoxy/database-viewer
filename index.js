@@ -44,9 +44,9 @@ function startInput() {
         // });
 
         var queryType = "";
-        var queryName = "";
 
         var choice = res.initialquery.split('.');
+        console.log(choice);
 
         switch (choice[0]) { //inform which choice was made from inquirer
             case '1':
@@ -58,8 +58,10 @@ function startInput() {
             case '5':
             case '6':
                 queryType = "add";
+                break;
             case '7':
                 queryType = "update";
+                break;
             default:
                 console.log("Invalid query.");
         }
@@ -70,28 +72,126 @@ function startInput() {
                     console.log(err)
                 }
                 console.table(res);
-                inquirer.prompt([
-                    {
-                        type: 'list',
-                        message: 'Do you have another query?',
-                        name: 'recursive',
-                        choices: ['Yes', 'No']
-                    }
-                ]).then((res) => {
-                    if (res.recursive == 'Yes') {
-                        startInput();
-                    }
-                });
+                recursiveQuery();
                 
             });
-        } else if (queryType == "add") {
-            
-        } else if (queryType == "update") {
+        } else if (queryType == "add") { //if the query is adding to a table, show correct prompts based on which table
+            if (choice[0] == '4') { //adding a new department
 
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        message: "What is the new department name?",
+                        name: "department"
+                    }
+                ]).then((res) => {
+                    connection.query(newAccess.addDepartment(res.department), (err, res) => {
+                        if (err) {
+                            console.log(err)
+                        }
+                        console.log("Role added!");
+                        recursiveQuery();
+                    })
+                })
+
+            } else if (choice[0] == '5') { //adding a new role
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        message: "What is the new role name?",
+                        name: "role"
+                    },
+                    {
+                        type: 'input',
+                        message: "What is the new role's salary?",
+                        name: "salary"
+                    },
+                    {
+                        type: 'input',
+                        message: "Which department is the new role under?",
+                        name: "department"
+                    }
+                ]).then((res) => {
+                    connection.query(newAccess.addRole(res.role, res.salary, res.department), (err, res) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        console.log("Role added!");
+                        recursiveQuery();
+                    })
+                })
+            } else { //adding a new employee
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        message: "What is the employee's first name?",
+                        name: "firstname"
+                    },
+                    {
+                        type: 'input',
+                        message: "What is the employee's last name?",
+                        name: "lastname"
+                    },
+                    {
+                        type: 'input',
+                        message: "What is the role ID for the new employee?",
+                        name: "role"
+                    },
+                    {
+                        type: 'input',
+                        message: "What is the new employee's manager ID?",
+                        name: "manager"
+                    }
+                ]).then((res) => {
+                    connection.query(newAccess.addEmployee(res.firstname, res.lastname, res.role, res.manager), (err, res) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        console.log("Employee added!");
+                        recursiveQuery();
+                    })
+                })
+            }
+        } else if (queryType == "update") {
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    message: "What is the employee's ID?",
+                    name: 'employee'
+                },
+                {
+                    type: 'input',
+                    message: "What is the employee's new role?",
+                    name: 'role'
+                }
+            ]).then((res) => {
+                connection.query(newAccess.updateTable(res.employee, res.role), (err, res) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    console.log("Employee updated!");
+                    recursiveQuery();
+                })
+            })
         } else {
 
         }
     })
+}
+
+function recursiveQuery() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            message: 'Do you have another query?',
+            name: 'recursive',
+            choices: ['Yes', 'No']
+        }
+    ]).then((res) => {
+        if (res.recursive == 'Yes') {
+            startInput();
+        }
+    });
 }
 
 startInput();
