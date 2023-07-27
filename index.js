@@ -21,27 +21,6 @@ function startInput() {
             choices: ['1. View all departments', '2. View all roles', '3. View all employees', '4. Add a department', '5. Add a role', '6. Add an employee', '7. Update an employee role']
         }
     ]).then((res) => {
-        // connection.query(`SELECT * FROM department`, (err, res) => {
-
-        //     if (err) {
-        //         console.log(err);
-        //     }
-        //     //if there is no error, show the input and check if there are further requests
-        //     console.table(res);
-        //     inquirer.prompt([
-        //         {
-        //             type: 'list',
-        //             message: 'Do you have another query?',
-        //             name: 'recursive',
-        //             choices: ['Yes', 'No']
-        //         }
-        //     ]).then((res) => {
-        //         if (res.recursive == 'Yes') {
-        //             startInput();
-        //         }
-        //     })
-    
-        // });
 
         var queryType = "";
 
