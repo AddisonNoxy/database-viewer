@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     database: 'company_db',
-    password: 'Konkonkitsune11!'
+    password: ''
 })
 
 const newAccess = new DatabaseAccess(); //import database access class and functions
