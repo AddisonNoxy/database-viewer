@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
     password: 'Konkonkitsune11!'
 })
 
-const newAccess = new DatabaseAccess();
+const newAccess = new DatabaseAccess(); //import database access class and functions
 
 function startInput() {
     inquirer.prompt([
@@ -46,7 +46,6 @@ function startInput() {
         var queryType = "";
 
         var choice = res.initialquery.split('.');
-        console.log(choice);
 
         switch (choice[0]) { //inform which choice was made from inquirer
             case '1':
